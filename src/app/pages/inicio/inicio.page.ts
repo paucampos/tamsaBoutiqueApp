@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import {
   IonContent,
   IonHeader,
@@ -8,35 +7,30 @@ import {
   IonToolbar,
   IonButton,
   IonMenu,
-  IonButtons,
-  IonMenuButton,
   IonList,
   IonItem,
   IonLabel,
-  IonIcon,
 } from '@ionic/angular';
 import { clp, foto, productos } from '../../utils/tienda-demo';
 import { RouterLink } from '@angular/router';
+import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
   imports: [
-    IonLabel,
-    IonItem,
-    IonIcon,
-    IonList,
+    CommonModule,
+    HeaderComponent,
     IonButton,
-    IonButtons,
-    IonMenuButton,
     IonContent,
     IonHeader,
+    IonItem,
+    IonLabel,
+    IonList,
     IonMenu,
     IonTitle,
     IonToolbar,
-    CommonModule,
-    FormsModule,
     RouterLink,
   ],
 })

@@ -1,13 +1,14 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonButtons, IonBackButton } from '@ionic/angular';
+import { IonContent, IonButton } from '@ionic/angular';
 import { clp, foto, Producto, productos, TiendaDemo } from '../../utils/tienda-demo';
+import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
   selector: 'app-detalle-producto',
   templateUrl: './detalle-producto.page.html',
-  imports: [RouterLink, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonButtons, IonBackButton],
+  imports: [HeaderComponent, RouterLink, IonButton, IonContent],
 })
 export class DetalleProductoPage {
   private readonly ruta = inject(ActivatedRoute);
@@ -17,9 +18,7 @@ export class DetalleProductoPage {
   });
   readonly tienda = inject(TiendaDemo);
 
-  readonly producto = computed(() =>
-    productos.find((producto) => producto.id === this.parametros()?.get('id')),
-  );
+  readonly producto = computed(() => productos.find((producto) => producto.id === this.parametros()?.get('id')));
 
   readonly talla = signal('M');
   readonly colorPolera = signal('Negro');

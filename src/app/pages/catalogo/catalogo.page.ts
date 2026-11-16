@@ -1,12 +1,13 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonSearchbar, IonButton, IonButtons, IonBackButton, IonIcon } from '@ionic/angular';
+import { IonContent, IonSearchbar, IonButton } from '@ionic/angular';
 import { clp, foto, productos } from '../../utils/tienda-demo';
+import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
   selector: 'app-catalogo',
   templateUrl: './catalogo.page.html',
-  imports: [RouterLink, IonBackButton, IonHeader, IonToolbar, IonTitle, IonContent, IonSearchbar, IonButton, IonButtons, IonIcon],
+  imports: [HeaderComponent, RouterLink, IonContent, IonSearchbar, IonButton],
 })
 export class CatalogoPage {
   readonly categorias = ['Todo', 'Poleras', 'Polerones', 'Accesorios'];
@@ -19,9 +20,10 @@ export class CatalogoPage {
     const categoria = this.categoria();
     const texto = this.busqueda().trim().toLocaleLowerCase('es-CL');
 
-    return productos.filter((producto) =>
-      (categoria === 'Todo' || producto.categoria === categoria) &&
-      producto.nombre.toLocaleLowerCase('es-CL').includes(texto),
+    return productos.filter(
+      (producto) =>
+        (categoria === 'Todo' || producto.categoria === categoria) &&
+        producto.nombre.toLocaleLowerCase('es-CL').includes(texto),
     );
   });
 }

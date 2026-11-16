@@ -1,12 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSegment, IonSegmentButton, IonLabel, IonBackButton, IonButtons } from '@ionic/angular';
+import { IonContent, IonButton, IonSegment, IonSegmentButton, IonLabel } from '@ionic/angular';
 import { clp, foto, TiendaDemo } from '../../utils/tienda-demo';
+import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
   selector: 'app-mis-pedidos',
   templateUrl: './mis-pedidos.page.html',
-  imports: [RouterLink, IonBackButton, IonButtons, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSegment, IonSegmentButton, IonLabel],
+  imports: [HeaderComponent, RouterLink, IonContent, IonButton, IonSegment, IonSegmentButton, IonLabel],
 })
 export class MisPedidosPage {
   private readonly router = inject(Router);
@@ -25,6 +26,6 @@ export class MisPedidosPage {
   enviarComprobante() {
     if (!this.archivo() || !this.tienda.lineas().length || this.tienda.comprobante()) return;
     this.tienda.comprobante.set(this.archivo());
-    void this.router.navigateByUrl('/mis-pedidos/confirmacion');
+    void this.router.navigateByUrl('/confirmacion');
   }
 }
