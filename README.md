@@ -5,7 +5,7 @@ TamSa Boutique es una aplicación móvil de vestuario y accesorios. El prototipo
 ## Tecnologías y requisitos
 
 - Ionic Angular **9.0.11**, Angular **22.2.5** y Capacitor **8.6.2**, según el archivo de bloqueo.
--Tener instalado [Node.js 22 LTS](https://nodejs.org/dist/v22.23.5/node-v22.23.5-x64.msi) (22.12 o superior dentro de esa versión) o Node.js 24 LTS, con el npm incluido.
+- Tener instalado [Node.js 22 LTS](https://nodejs.org/dist/v22.23.5/node-v22.23.5-x64.msi) (22.12 o superior dentro de esa versión) o Node.js 24 LTS, con el npm incluido.
 - [Git](https://github.com/git-for-windows/git/releases/download/v2.56.1.windows.1/Git-2.56.1-64-bit.exe) es necesario para clonar por terminal. También se puede descargar el código como ZIP desde la rama de entrega.
 - Un navegador moderno.
 
