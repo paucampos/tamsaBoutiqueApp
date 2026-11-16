@@ -1,16 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular';
+import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonButtons, IonBackButton, IonIcon } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import { timeOutline } from 'ionicons/icons';
+import { clp, TiendaDemo } from '../../utils/tienda-demo';
 
 @Component({
   selector: 'app-confirmacion',
   templateUrl: './confirmacion.page.html',
-  styleUrls: ['./confirmacion.page.scss'],
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule],
+  imports: [RouterLink, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonButtons, IonBackButton, IonIcon],
 })
-export class ConfirmacionPage implements OnInit {
-  constructor() {}
+export class ConfirmacionPage {
+  readonly tienda = inject(TiendaDemo);
+  readonly clp = clp;
 
-  ngOnInit() {}
+  constructor() {
+    addIcons({ timeOutline });
+  }
 }

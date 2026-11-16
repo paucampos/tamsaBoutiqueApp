@@ -1,13 +1,31 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>confirmacion</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">confirmacion</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <main class="tienda">
+    @if (tienda.comprobante()) {
+    <section class="centro">
+      <ion-icon class="estado-icono" name="time-outline" aria-hidden="true"></ion-icon>
+      <h1>Comprobante en revisión</h1>
+      <p class="suave">Confirmaremos el pago cuando el personal verifique la transferencia.</p>
+    </section>
+
+    <h2>Resumen de tu pedido</h2>
+    @for (linea of tienda.lineas(); track linea.clave) {
+    <p class="fila">
+      <span>{{ linea.producto.nombre }} · {{ linea.color }} · {{ linea.talla }} × {{ linea.cantidad }}</span>
+      <span>{{ clp(linea.producto.precio * linea.cantidad) }}</span>
+    </p>
+    }
+    <p class="fila total"><span>Total</span><strong>{{ clp(tienda.total()) }}</strong></p>
+
+    <section class="recuadro aviso-live">
+      <strong>Retiro en boutique</strong>
+      <p>Una vez confirmado el pago, coordinaremos contigo el día y horario de retiro.</p>
+    </section>
+    } @else {
+    <h1>Estado del pedido</h1>
+    <p>Aún no has enviado un comprobante en esta sesión.</p>
+    }
+
+    <ion-button expand="block" routerLink="/mis-pedidos">Ver mis pedidos</ion-button>
+    <ion-button expand="block" fill="clear" routerLink="/home">Volver al inicio</ion-button>
+  </main>
 </ion-content>

@@ -25,7 +25,7 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/mis-pedidos/mis-pedidos.page').then((m) => m.MisPedidosPage),
       },
       {
-        path: 'mis-pedidos/confirmacion',
+        path: 'confirmacion',
         loadComponent: () => import('./pages/confirmacion/confirmacion.page').then((m) => m.ConfirmacionPage),
       },
       {
