@@ -1,0 +1,80 @@
+
+<app-header title="Mi carrito" backHref="/catalogo" />
+
+<ion-content>
+  <main class="tienda">
+    <h1>Mi carrito ({{ carrito.unidades() }})</h1>
+
+    @if (!carrito.lineas().length) {
+      <p>Tu carrito está vacío.</p>
+
+      <ion-button routerLink="/catalogo">
+        Ver catálogo
+      </ion-button>
+    } @else {
+      @for (linea of carrito.lineas(); track linea.varianteId) {
+        <article class="linea-pedido">
+          <div
+            class="foto-prenda"
+            [style.background-image]="'url(' + imagenProducto(linea.producto) + ')'">
+          </div>
+
+          <div>
+            <strong>{{ linea.producto.nombre }}</strong>
+
+            <p class="suave">
+              {{ linea.variante.talla }} · {{ linea.variante.color }}
+            </p>
+
+            <p>
+              {{ clp(linea.producto.precio * linea.cantidad) }}
+            </p>
+
+            <div class="opciones">
+              <ion-button
+                fill="clear"
+                size="small"
+                aria-label="Reducir cantidad"
+                [disabled]="linea.cantidad === 1"
+                (click)="carrito.cambiarCantidad(linea.varianteId, -1)">
+                −
+              </ion-button>
+
+              <span>{{ linea.cantidad }}</span>
+
+              <ion-button
+                fill="clear"
+                size="small"
+                aria-label="Aumentar cantidad"
+                [disabled]="linea.cantidad >= linea.variante.stock"
+                (click)="carrito.cambiarCantidad(linea.varianteId, 1)">
+                +
+              </ion-button>
+
+              <ion-button
+                fill="clear"
+                size="small"
+                (click)="carrito.quitar(linea.varianteId)">
+                Quitar
+              </ion-button>
+            </div>
+          </div>
+        </article>
+      }
+
+      <p class="fila suave">
+        <span>Subtotal</span>
+        <span>{{ clp(carrito.total()) }}</span>
+      </p>
+
+      <p class="fila total">
+        <span>Total</span>
+        <strong>{{ clp(carrito.total()) }}</strong>
+      </p>
+
+      <ion-button expand="block" routerLink="/checkout">
+        Continuar con la compra
+      </ion-button>
+    }
+  </main>
+</ion-content>

@@ -1,0 +1,30 @@
+.recuadro {
+  margin-bottom: 24px;
+
+  .fila {
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #e8dfd9;
+    }
+
+    p {
+      margin: 6px 0 0;
+      font-size: 13px;
+    }
+
+    strong {
+      font-size: 14px;
+    }
+  }
+}
+
+.aviso-live {
+  margin-top: 24px;
+
+  h2 {
+    margin-top: 0;
+  }
+}

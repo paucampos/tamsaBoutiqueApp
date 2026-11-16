@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { homeOutline, searchOutline, bagHandleOutline, personOutline } from 'ionicons/icons';
+import {
+  homeOutline,
+  searchOutline,
+  cartOutline,
+  personOutline
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-tabs',
@@ -23,11 +28,11 @@ export class TabsPage {
   readonly tabs = [
     { tab: 'inicio', label: 'Inicio', icon: 'home-outline' },
     { tab: 'catalogo', label: 'Catálogo', icon: 'search-outline' },
-    { tab: 'mis-pedidos', label: 'Mis pedidos', icon: 'bag-handle-outline' },
+    { tab: 'carrito', label: 'Carrito', icon: 'cart-outline' },
     { tab: 'perfil', label: 'Perfil', icon: 'person-outline' },
   ];
 
   constructor() {
-    addIcons({ homeOutline, searchOutline, bagHandleOutline, personOutline });
+    addIcons({ homeOutline, searchOutline, cartOutline, personOutline });
   }
 }

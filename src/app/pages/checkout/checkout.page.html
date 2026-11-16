@@ -1,0 +1,113 @@
+<app-header title="Finalizar compra" backHref="/carrito" />
+
+<ion-content>
+  <main class="tienda">
+    <h1>Resumen de tu compra</h1>
+
+    @if (carrito.lineas().length) {
+
+      <section class="recuadro">
+        @for (linea of carrito.lineas(); track linea.varianteId) {
+          <div class="fila">
+            <div>
+              <strong>{{ linea.producto.nombre }}</strong>
+              <p class="suave">
+                {{ linea.variante.talla }} · {{ linea.variante.color }}
+                · Cantidad: {{ linea.cantidad }}
+              </p>
+            </div>
+
+            <strong>
+              {{ clp(linea.producto.precio * linea.cantidad) }}
+            </strong>
+          </div>
+        }
+      </section>
+
+      <h2>Detalle del pago</h2>
+
+      <p class="fila suave">
+        <span>Subtotal</span>
+        <span>{{ clp(carrito.total()) }}</span>
+      </p>
+
+      <p class="fila total">
+        <span>Total a pagar</span>
+        <strong>{{ clp(carrito.total()) }}</strong>
+      </p>
+
+      <section class="recuadro aviso-live">
+        <h2>Pago seguro</h2>
+        <p>
+          Serás redirigida a Webpay Plus de Transbank
+          para realizar el pago de tu compra.
+        </p>
+      </section>
+
+      @if (errorPedido()) {
+        <p class="suave" role="alert">
+          {{ errorPedido() }}
+        </p>
+      }
+
+      @if (pedidoCreadoId(); as pedidoId) {
+        <div class="recuadro">
+          <p>Pedido N.º {{ pedidoId }} creado correctamente.</p>
+
+          <p class="suave">
+            Tu pedido está reservado temporalmente.
+            Continúa con el pago para confirmar la compra.
+          </p>
+
+          @if (errorPago()) {
+            <p role="alert">{{ errorPago() }}</p>
+          }
+
+          <ion-button
+            expand="block"
+            [disabled]="iniciandoPago()"
+            (click)="iniciarPago()"
+          >
+            @if (iniciandoPago()) {
+              Conectando con Webpay...
+            } @else {
+              Pagar con Webpay
+            }
+          </ion-button>
+        </div>
+      }
+
+      <ion-button
+        expand="block"
+        [disabled]="procesando() || carrito.lineas().length === 0 || pedidoCreadoId() !== null"
+        (click)="pagar()"
+      >
+        @if (procesando()) {
+          Creando pedido...
+        } @else if (pedidoCreadoId() !== null) {
+          Pedido creado
+        } @else {
+          Crear pedido
+        }
+      </ion-button>
+
+      <ion-button
+        expand="block"
+        fill="clear"
+        routerLink="/carrito">
+        Volver al carrito
+      </ion-button>
+
+    } @else {
+
+      <p class="suave">
+        No tienes productos para finalizar la compra.
+      </p>
+
+      <ion-button expand="block" routerLink="/catalogo">
+        Explorar productos
+      </ion-button>
+
+    }
+  </main>
+</ion-content>

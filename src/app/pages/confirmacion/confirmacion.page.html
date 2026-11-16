@@ -1,31 +1,117 @@
-<ion-content [fullscreen]="true">
+
+<app-header title="Confirmación del pedido" backHref="/inicio" />
+
+<ion-content>
   <main class="tienda">
-    @if (tienda.comprobante()) {
-    <section class="centro">
-      <ion-icon class="estado-icono" name="time-outline" aria-hidden="true"></ion-icon>
-      <ion-title>Comprobante en revisión</ion-title>
-      <p class="suave">Confirmaremos el pago cuando el personal verifique la transferencia.</p>
-    </section>
 
-    <h2>Resumen de tu pedido</h2>
-    @for (linea of tienda.lineas(); track linea.clave) {
-    <p class="fila">
-      <span>{{ linea.producto.nombre }} · {{ linea.color }} · {{ linea.talla }} × {{ linea.cantidad }}</span>
-      <span>{{ clp(linea.producto.precio * linea.cantidad) }}</span>
-    </p>
+    @if (cargando()) {
+      <p class="centro suave">Consultando estado del pedido...</p>
+
+    } @else if (error()) {
+      <section class="centro">
+        <h1>No pudimos consultar tu pedido</h1>
+        <p class="suave" role="alert">{{ error() }}</p>
+      </section>
+
+    } @else if (pedido(); as item) {
+
+      <section class="centro">
+
+        @if (item.estado === 'pagado') {
+          <ion-icon
+            class="estado-icono"
+            name="checkmark-circle-outline"
+            color="success"
+            aria-hidden="true">
+          </ion-icon>
+
+          <h1>¡Pago realizado correctamente!</h1>
+
+          <p class="suave">
+            Tu compra fue confirmada.
+          </p>
+
+        } @else if (item.estado === 'rechazado') {
+          <ion-icon
+            class="estado-icono"
+            name="close-circle-outline"
+            color="danger"
+            aria-hidden="true">
+          </ion-icon>
+
+          <h1>Pago rechazado</h1>
+
+          <p class="suave">
+            No fue posible completar el pago de tu pedido.
+          </p>
+
+        } @else {
+          <ion-icon
+            class="estado-icono"
+            name="time-outline"
+            aria-hidden="true">
+          </ion-icon>
+
+          <h1>Pago pendiente de confirmación</h1>
+
+          <p class="suave">
+            Estamos verificando el estado de tu transacción.
+          </p>
+        }
+
+        <p>Pedido N.º {{ item.id }}</p>
+      </section>
+
+      <h2>Resumen de tu pedido</h2>
+
+      @for (producto of item.productos; track producto.variante_id) {
+        <p class="fila">
+          <span>
+            {{ producto.producto }} ·
+            {{ producto.color }} ·
+            {{ producto.talla }} ×
+            {{ producto.cantidad }}
+          </span>
+
+          <span>
+            {{ clp(producto.precio_unitario * producto.cantidad) }}
+          </span>
+        </p>
+      }
+
+      <p class="fila total">
+        <span>Total</span>
+        <strong>{{ clp(item.total) }}</strong>
+      </p>
+
+      @if (item.estado === 'pagado') {
+        <section class="recuadro aviso-live">
+          <strong>Retiro en boutique</strong>
+          <p>
+            Coordinaremos contigo el día y horario de retiro
+            de tu compra.
+          </p>
+        </section>
+      }
+
+      @if (item.estado === 'pendiente') {
+        <ion-button
+          expand="block"
+          fill="outline"
+          (click)="consultarPedido(item.id)">
+          Actualizar estado
+        </ion-button>
+      }
+
     }
-    <p class="fila total"><span>Total</span><strong>{{ clp(tienda.total()) }}</strong></p>
 
-    <section class="recuadro aviso-live">
-      <strong>Retiro en boutique</strong>
-      <p>Una vez confirmado el pago, coordinaremos contigo el día y horario de retiro.</p>
-    </section>
-    } @else {
-    <h1>Estado del pedido</h1>
-    <p>Aún no has enviado un comprobante en esta sesión.</p>
-    }
+    <ion-button expand="block" routerLink="/mis-pedidos">
+      Ver mis pedidos
+    </ion-button>
 
-    <ion-button expand="block" routerLink="/mis-pedidos">Ver mis pedidos</ion-button>
-    <ion-button expand="block" fill="clear" routerLink="/home">Volver al inicio</ion-button>
+    <ion-button expand="block" fill="clear" routerLink="/inicio">
+      Volver al inicio
+    </ion-button>
+
   </main>
 </ion-content>

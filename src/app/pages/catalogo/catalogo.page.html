@@ -5,33 +5,44 @@
     <ion-searchbar
       aria-label="Buscar prendas"
       placeholder="Buscar prendas..."
-      (ionInput)="busqueda.set($event.detail.value ?? '')">
+      (ionInput)="busqueda.set($event.detail.value ?? '')"
+    >
     </ion-searchbar>
 
+    @if (cargando()) {
+    <p class="centro suave">Cargando productos...</p>
+    } @else if (error()) {
+    <p class="centro suave">No fue posible cargar los productos.</p>
+
+    <ion-button expand="block" (click)="cargarProductos()"> Reintentar </ion-button>
+    } @else {
     <div class="opciones">
-      @for (opcion of categorias; track opcion) {
-        <ion-button
-          size="small"
-          [fill]="categoria() === opcion ? 'solid' : 'clear'"
-          [attr.aria-pressed]="categoria() === opcion"
-          (click)="categoria.set(opcion)">
-          {{ opcion }}
-        </ion-button>
+      @for (opcion of categorias(); track opcion) {
+      <ion-button
+        size="small"
+        [fill]="categoria() === opcion ? 'solid' : 'clear'"
+        [attr.aria-pressed]="categoria() === opcion"
+        (click)="categoria.set(opcion)"
+      >
+        {{ opcion }}
+      </ion-button>
       }
     </div>
 
     <div class="grilla-prendas">
       @for (producto of resultados(); track producto.id) {
-        <a [routerLink]="['/catalogo', producto.id]">
-          <div class="foto-prenda" [style.background-image]="foto(producto)"></div>
-          <span>{{ producto.nombre }}</span>
-          <strong>{{ clp(producto.precio) }}</strong>
-        </a>
+      <a [routerLink]="['/catalogo', producto.id]">
+        <div class="foto-prenda" [style.background-image]="'url(' + imagenProducto(producto) + ')'"></div>
+
+        <span>{{ producto.nombre }}</span>
+        <strong>{{ clp(producto.precio) }}</strong>
+      </a>
       } @empty {
-        <p>No encontramos prendas para esa búsqueda.</p>
+      <p>No encontramos prendas para esa búsqueda.</p>
       }
     </div>
 
     <p class="centro suave">{{ resultados().length }} productos</p>
+    }
   </main>
 </ion-content>

@@ -1,41 +1,67 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IonContent, IonButton } from '@ionic/angular';
-import { clp, foto, Producto, productos, TiendaDemo } from '../../utils/tienda-demo';
+
 import { HeaderComponent } from '../../components/header/header.component';
+import { ProductosService } from '../../services/productos';
+import { Producto, Variante } from '../../models/producto.model';
+import { clp } from '../../utils/tienda-demo';
+import { CarritoService } from '../../services/carrito';
 
 @Component({
   selector: 'app-detalle-producto',
   templateUrl: './detalle-producto.page.html',
-  imports: [HeaderComponent, RouterLink, IonButton, IonContent],
+  imports: [HeaderComponent, RouterLink, IonContent, IonButton],
 })
 export class DetalleProductoPage {
+  private readonly carrito = inject(CarritoService);
   private readonly ruta = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly parametros = toSignal(this.ruta.paramMap, {
-    initialValue: this.ruta.snapshot.paramMap,
-  });
-  readonly tienda = inject(TiendaDemo);
+  private readonly productosService = inject(ProductosService);
 
-  readonly producto = computed(() => productos.find((producto) => producto.id === this.parametros()?.get('id')));
+  readonly producto = signal<Producto | null>(null);
+  readonly varianteSeleccionada = signal<Variante | null>(null);
 
-  readonly talla = signal('M');
-  readonly colorPolera = signal('Negro');
-  readonly tallas = ['S', 'M', 'L', 'XL'];
-  readonly coloresPolera = [
-    { nombre: 'Negro', hex: '#332b27' },
-    { nombre: 'Rosado', hex: '#ddb6b7' },
-    { nombre: 'Beige', hex: '#c8b49d' },
-  ];
+  readonly cargando = signal(true);
+  readonly error = signal(false);
+
   readonly clp = clp;
-  readonly foto = foto;
 
-  reservar(producto: Producto) {
-    const talla = producto.categoria === 'Accesorios' ? 'Única' : this.talla();
-    const color = producto.id === 'polera' ? this.colorPolera() : producto.color;
+  readonly variantesDisponibles = computed(
+    () => this.producto()?.variantes.filter((variante) => variante.stock > 0) ?? [],
+  );
 
-    this.tienda.agregar(producto, talla, color);
-    void this.router.navigateByUrl('/mis-pedidos');
+  readonly imagenProducto = (producto: Producto): string => producto.imagen_url || 'assets/productos/placeholder.png';
+
+  constructor() {
+    const id = Number(this.ruta.snapshot.paramMap.get('id'));
+
+    this.productosService.obtenerProductoPorId(id).subscribe({
+      next: (producto) => {
+        this.producto.set(producto ?? null);
+        this.varianteSeleccionada.set(producto?.variantes.find((variante) => variante.stock > 0) ?? null);
+        this.cargando.set(false);
+      },
+      error: (error) => {
+        console.error('Error al cargar producto:', error);
+        this.error.set(true);
+        this.cargando.set(false);
+      },
+    });
+  }
+
+  agregarAlCarrito() {
+    const producto = this.producto();
+    const variante = this.varianteSeleccionada();
+
+    if (!producto || !variante) return;
+
+    const agregado = this.carrito.agregar(producto, variante);
+
+    if (agregado) {
+      void this.router.navigateByUrl('/carrito');
+    } else {
+      console.warn('No hay stock suficiente para agregar el producto');
+    }
   }
 }

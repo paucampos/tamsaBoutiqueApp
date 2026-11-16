@@ -42,7 +42,7 @@
       <p class="fila total"><span>Total</span><strong>{{ clp(tienda.total()) }}</strong></p>
 
       @if (tienda.comprobante()) {
-        <ion-button expand="block" routerLink="/mis-pedidos/confirmacion">Ver estado del pedido</ion-button>
+        <ion-button expand="block" routerLink="/confirmacion">Ver estado del pedido</ion-button>
       } @else if (mostrarTransferencia()) {
         <section class="recuadro aviso-live">
           <h2>Transferencia bancaria</h2>
@@ -54,7 +54,7 @@
           Simular envío
         </ion-button>
       } @else {
-        <ion-button expand="block" (click)="mostrarTransferencia.set(true)">Continuar a transferencia</ion-button>
+        <ion-button expand="block" (click)="mostrarTransferencia.set(true)">Continuar con la compra</ion-button>
       }
     }
   </main>

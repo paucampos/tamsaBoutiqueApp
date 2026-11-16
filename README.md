@@ -46,7 +46,7 @@ El resultado queda en `www/`, el mismo directorio configurado en Capacitor.
 1. En **Inicio**, pulsa **Ver prendas** y abre **Polera algodón**.
 2. Elige una talla y un color. Pulsa **Reservar producto** para ir a **Mis pedidos**.
 3. Cambia la cantidad con **+** y comprueba que se actualice el total.
-4. Pulsa **Continuar a transferencia**, selecciona una imagen o un PDF de ejemplo y pulsa **Simular envío**.
+4. Pulsa **Continuar con la compra**, selecciona una imagen o un PDF de ejemplo y pulsa **Simular envío**.
 5. Comprueba que aparezca **Comprobante en revisión** y que el total coincida con la reserva. Usa **Ver mis pedidos** o **Volver al inicio** para continuar navegando.
 
 ## Consideraciones de desarrollo y problemas resueltos
