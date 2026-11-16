@@ -35,3 +35,109 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+:root {
+  --tamsa-fondo: #faf8f3;
+  --tamsa-texto: #302824;
+  --tamsa-marron: #784f46;
+  --tamsa-rosa: #f2e3dc;
+  --tamsa-borde: #e5dbd2;
+  --tamsa-suave: #6c625c;
+}
+
+ion-toolbar, ion-tab-bar {
+  --background: var(--tamsa-fondo);
+  --color: var(--tamsa-texto);
+}
+
+ion-tab-bar { --border: 1px solid var(--tamsa-borde); }
+ion-tab-button { --color-selected: var(--tamsa-marron); }
+ion-content { --background: var(--tamsa-fondo); }
+
+.tienda {
+  max-width: 540px;
+  margin-inline: auto;
+  padding: 16px 20px 28px;
+  color: var(--tamsa-texto);
+}
+
+.tienda h1, .marca { font-family: Georgia, serif; }
+.marca { color: var(--tamsa-marron); }
+.tienda h1 { font-size: 30px; }
+.tienda h2 { font-size: 17px; }
+.tienda p { line-height: 1.45; }
+.tienda a { color: var(--tamsa-marron); }
+
+.tienda ion-button {
+  --background: var(--tamsa-marron);
+  --color: white;
+  --border-radius: 10px;
+  text-transform: none;
+}
+
+.tienda ion-button[fill='clear'] {
+  --background: transparent;
+  --color: var(--tamsa-marron);
+}
+
+.hero, .foto-prenda {
+  background-color: #e8ddd1;
+  background-position: center;
+  background-size: cover;
+  border-radius: 12px;
+}
+
+.hero {
+  min-height: 214px;
+  padding: 24px 16px;
+  background-image:
+    linear-gradient(90deg, #faf8f3e8, #faf8f300),
+    url('/assets/productos/coleccion.png');
+  background-position: center right;
+}
+
+.hero h1 { max-width: 8ch; margin: 8px 0 14px; }
+.foto-prenda { aspect-ratio: 1; }
+.foto-detalle { aspect-ratio: 1.12; }
+
+.grilla-prendas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 12px;
+}
+
+.grilla-prendas a {
+  display: grid;
+  gap: 4px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.recuadro, .linea-pedido {
+  padding: 12px;
+  border: 1px solid var(--tamsa-borde);
+  border-radius: 12px;
+  margin-block: 12px;
+}
+
+.aviso-live { background: var(--tamsa-rosa); }
+.linea-pedido { display: grid; grid-template-columns: 72px 1fr; gap: 12px; }
+.linea-pedido p, .recuadro p { margin-block: 4px; }
+
+.fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.opciones { display: flex; flex-wrap: wrap; gap: 6px; }
+.centro { text-align: center; }
+.suave { color: var(--tamsa-suave); }
+.total { border-top: 1px solid var(--tamsa-borde); padding-top: 14px; }
+.total strong { font-size: 22px; }
+.estado-icono { font-size: 58px; color: var(--tamsa-marron); }
+
+.tienda ion-searchbar { padding-inline: 0; --border-radius: 10px; }
+.tienda ion-segment { --background: #f5eee8; margin-bottom: 12px; }
+.tienda ion-segment-button { --color-checked: var(--tamsa-marron); }

@@ -1,0 +1,62 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/catalogo" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalle de producto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <main class="tienda">
+    @if (producto(); as item) {
+      <div class="foto-prenda foto-detalle" [style.background-image]="foto(item)"></div>
+      <h1>{{ item.nombre }}</h1>
+      <strong>{{ clp(item.precio) }}</strong>
+
+      <p>Color: {{ item.id === 'polera' ? colorPolera() : item.color }}</p>
+
+      @if (item.id === 'polera') {
+        <div class="opciones">
+          @for (color of coloresPolera; track color.nombre) {
+            <button
+              type="button"
+              [style.background]="color.hex"
+              [attr.aria-label]="color.nombre"
+              [attr.aria-pressed]="colorPolera() === color.nombre"
+              [style.outline]="colorPolera() === color.nombre ? '2px solid #784f46' : 'none'"
+              style="width: 36px; height: 36px; border: 3px solid white; border-radius: 50%"
+              (click)="colorPolera.set(color.nombre)">
+            </button>
+          }
+        </div>
+      }
+
+      @if (item.categoria !== 'Accesorios') {
+        <p>Talla</p>
+        <div class="opciones">
+          @for (opcion of tallas; track opcion) {
+            <ion-button
+              size="small"
+              [fill]="talla() === opcion ? 'solid' : 'clear'"
+              [attr.aria-pressed]="talla() === opcion"
+              (click)="talla.set(opcion)">
+              {{ opcion }}
+            </ion-button>
+          }
+        </div>
+      }
+
+      @if (tienda.comprobante()) {
+        <ion-button expand="block" routerLink="/mis-pedidos/confirmacion">
+          Ver pedido en revisión
+        </ion-button>
+      } @else {
+        <ion-button expand="block" (click)="reservar(item)">Reservar producto</ion-button>
+      }
+    } @else {
+      <p>Este producto no está disponible.</p>
+      <ion-button routerLink="/catalogo">Volver al catálogo</ion-button>
+    }
+  </main>
+</ion-content>

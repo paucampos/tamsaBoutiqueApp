@@ -1,0 +1,67 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/catalogo" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mi pedido</ion-title></ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <main class="tienda">
+    <ion-segment [value]="seccion()" (ionChange)="seccion.set($event.detail.value === 'confirmados' ? 'confirmados' : 'reserva')">
+      <ion-segment-button value="reserva">
+        <ion-label>Mi reserva ({{ tienda.unidades() }})</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="confirmados">
+        <ion-label>Confirmados</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    @if (seccion() === 'confirmados') {
+      <p class="suave">Todavía no hay pedidos con pago confirmado.</p>
+    } @else if (!tienda.lineas().length) {
+      <p>Tu reserva está vacía.</p>
+      <ion-button routerLink="/catalogo">Ver catálogo</ion-button>
+    } @else {
+      @for (linea of tienda.lineas(); track linea.clave) {
+        <article class="linea-pedido">
+          <div class="foto-prenda" [style.background-image]="foto(linea.producto)"></div>
+          <div>
+            <strong>{{ linea.producto.nombre }}</strong>
+            <p class="suave">{{ linea.talla }} · {{ linea.color }}</p>
+            <p>{{ clp(linea.producto.precio * linea.cantidad) }}</p>
+            @if (!tienda.comprobante()) {
+              <div class="opciones">
+                <ion-button fill="clear" size="small" aria-label="Reducir cantidad"
+                  [disabled]="linea.cantidad === 1" (click)="tienda.cambiarCantidad(linea.clave, -1)">−</ion-button>
+                <span>{{ linea.cantidad }}</span>
+                <ion-button fill="clear" size="small" aria-label="Aumentar cantidad"
+                  (click)="tienda.cambiarCantidad(linea.clave, 1)">+</ion-button>
+                <ion-button fill="clear" size="small" (click)="tienda.quitar(linea.clave)">Quitar</ion-button>
+              </div>
+            }
+          </div>
+        </article>
+      }
+
+      <p class="fila suave"><span>Subtotal</span><span>{{ clp(tienda.total()) }}</span></p>
+      <p class="fila total"><span>Total</span><strong>{{ clp(tienda.total()) }}</strong></p>
+
+      @if (tienda.comprobante()) {
+        <ion-button expand="block" routerLink="/mis-pedidos/confirmacion">Ver estado del pedido</ion-button>
+      } @else if (mostrarTransferencia()) {
+        <section class="recuadro aviso-live">
+          <h2>Transferencia bancaria</h2>
+          <p>Selecciona una imagen o PDF de prueba para simular el envío del comprobante.</p>
+          <label for="comprobante">Comprobante</label><br>
+          <input id="comprobante" type="file" accept="image/*,.pdf" (change)="seleccionarArchivo($event)">
+        </section>
+        <ion-button expand="block" [disabled]="!archivo()" (click)="enviarComprobante()">
+          Simular envío
+        </ion-button>
+      } @else {
+        <ion-button expand="block" (click)="mostrarTransferencia.set(true)">Continuar a transferencia</ion-button>
+      }
+    }
+  </main>
+</ion-content>

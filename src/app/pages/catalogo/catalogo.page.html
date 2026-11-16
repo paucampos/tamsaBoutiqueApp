@@ -1,0 +1,49 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inicio" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Catálogo</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/mis-pedidos">
+        <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <main class="tienda">
+    <ion-searchbar
+      aria-label="Buscar prendas"
+      placeholder="Buscar prendas..."
+      (ionInput)="busqueda.set($event.detail.value ?? '')">
+    </ion-searchbar>
+
+    <div class="opciones">
+      @for (opcion of categorias; track opcion) {
+        <ion-button
+          size="small"
+          [fill]="categoria() === opcion ? 'solid' : 'clear'"
+          [attr.aria-pressed]="categoria() === opcion"
+          (click)="categoria.set(opcion)">
+          {{ opcion }}
+        </ion-button>
+      }
+    </div>
+
+    <div class="grilla-prendas">
+      @for (producto of resultados(); track producto.id) {
+        <a [routerLink]="['/catalogo', producto.id]">
+          <div class="foto-prenda" [style.background-image]="foto(producto)"></div>
+          <span>{{ producto.nombre }}</span>
+          <strong>{{ clp(producto.precio) }}</strong>
+        </a>
+      } @empty {
+        <p>No encontramos prendas para esa búsqueda.</p>
+      }
+    </div>
+
+    <p class="centro suave">{{ resultados().length }} productos</p>
+  </main>
+</ion-content>
