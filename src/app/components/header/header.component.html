@@ -1,0 +1,31 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    @if (showMenu()) {
+      <ion-buttons slot="start">
+        <ion-menu-button aria-label="Abrir menú"></ion-menu-button>
+      </ion-buttons>
+    } @else if (backHref(); as destino) {
+      <ion-buttons slot="start">
+        <ion-back-button
+          [defaultHref]="destino"
+          text=""
+          aria-label="Volver">
+        </ion-back-button>
+      </ion-buttons>
+    }
+
+    <ion-title [class.marca]="brand()">{{ title() }}</ion-title>
+
+    @if (showOrders()) {
+      <ion-buttons slot="end">
+        <ion-button routerLink="/mis-pedidos" aria-label="Ir a Mis pedidos">
+          <ion-icon
+            slot="icon-only"
+            name="bag-handle-outline"
+            aria-hidden="true">
+          </ion-icon>
+        </ion-button>
+      </ion-buttons>
+    }
+  </ion-toolbar>
+</ion-header>
